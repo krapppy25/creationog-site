@@ -2,6 +2,7 @@
   const panel=document.querySelector('[data-guides-panel]');
   const backdrop=document.querySelector('[data-guides-backdrop]');
   const openers=[...document.querySelectorAll('[data-guides]')];
+  const doors=[...document.querySelectorAll('[data-door-mode]')];
   const close=document.querySelector('[data-guides-close]');
   const response=document.querySelector('[data-guide-response]');
   const modes=[...document.querySelectorAll('[data-guide-mode]')];
@@ -12,20 +13,21 @@
     stuck:`<p><strong>Clarity Guide:</strong> What exactly is not working?</p><p><strong>Relationship Guide:</strong> Has something changed in the people, conditions or relationships around it?</p><p><strong>Return Guide:</strong> A wrong turn can be information. What might reality be trying to show you?</p>`,
     curious:`<p><strong>Wonder Guide:</strong> Perfect. You do not need a project to be here.</p><p><strong>Living World Guide:</strong> What is catching your attention right now?</p><p><strong>Experiment Guide:</strong> Follow one thread and see what appears. You can always come back.</p>`
   };
-  const setOpen=(open)=>{
+  const choose=(mode)=>{
+    modes.forEach(b=>b.classList.toggle('active',b.dataset.guideMode===mode));
+    if(response&&messages[mode])response.innerHTML=messages[mode];
+  };
+  const setOpen=(open,mode)=>{
     if(!panel||!backdrop)return;
     panel.hidden=!open;backdrop.hidden=!open;
     document.body.style.overflow=open?'hidden':'';
+    if(open&&mode)choose(mode);
     if(open&&close)close.focus();
   };
   openers.forEach(btn=>btn.addEventListener('click',()=>setOpen(true)));
+  doors.forEach(door=>door.addEventListener('click',()=>setOpen(true,door.dataset.doorMode)));
   if(close)close.addEventListener('click',()=>setOpen(false));
   if(backdrop)backdrop.addEventListener('click',()=>setOpen(false));
   document.addEventListener('keydown',e=>{if(e.key==='Escape')setOpen(false)});
-  modes.forEach(btn=>btn.addEventListener('click',()=>{
-    modes.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const html=messages[btn.dataset.guideMode];
-    if(response&&html)response.innerHTML=html;
-  }));
+  modes.forEach(btn=>btn.addEventListener('click',()=>choose(btn.dataset.guideMode)));
 })();
