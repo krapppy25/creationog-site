@@ -1,6 +1,9 @@
 (() => {
   const style=document.createElement('style');
   style.textContent=`
+    .site-nav{gap:34px;padding-left:3.4vw;padding-right:3.4vw}
+    .site-nav nav{gap:clamp(30px,3vw,52px)}
+    .site-nav nav a{font-size:1.08rem;letter-spacing:.025em}
     .welcome-threshold{grid-template-columns:minmax(0,.98fr) minmax(520px,1.12fr);gap:28px;padding-right:2.5vw}
     .welcome-art{min-height:590px;display:flex;align-items:center;justify-content:center;overflow:visible}
     .creator-place{width:min(780px,100%);display:flex;align-items:center;justify-content:center;position:relative}
@@ -12,13 +15,16 @@
     .guides-section{grid-template-columns:minmax(480px,.95fr) minmax(0,1.05fr);gap:54px;background:linear-gradient(135deg,#fff 0%,#fffdf6 52%,#eef9f5 100%)}
     .guides-art{min-height:560px;display:flex;align-items:center;justify-content:center}.guides-art img{width:min(720px,100%);max-height:none;margin:0;object-fit:contain;filter:drop-shadow(0 20px 18px rgba(18,61,100,.14))}
     .guides-intro{font-size:1.12rem;max-width:65ch}.guides-intro p{margin:0 0 14px}.guides-intro p:last-child{margin-bottom:0}
-    .guide-list span{display:flex;flex-direction:column;gap:3px}.guide-list span>span{display:block;background:none;padding:0;border-radius:0}.guide-list b{display:block;font-size:1.08rem}
-    .guides-preview-note{font-size:.9rem!important;color:#526b7d;margin:.8rem 0 0;max-width:48ch}
-    .promise-grid{grid-template-columns:repeat(3,1fr);max-width:1180px}.promise-grid article{min-height:145px}.promise-grid b{font-size:1.15rem}.promise-grid p{font-size:1rem}
-    .promise-bottom span{font-size:1.05rem;line-height:1.5}.promise-bottom b{font-size:1.22rem;margin-bottom:5px}
-    @media(max-width:1250px){.welcome-threshold{grid-template-columns:1fr;padding-right:5vw}.welcome-art{min-height:auto;margin-top:24px}.creator-place{width:min(900px,96%);margin:auto}.guides-section{grid-template-columns:1fr}.guides-art{min-height:auto}.guides-art img{width:min(820px,96%);margin:auto}}
-    @media(max-width:900px){.promise-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:620px){.welcome-art{min-height:auto;margin-top:32px}.creator-place{width:100%}.creator-place img{filter:drop-shadow(0 12px 12px rgba(18,61,100,.13))}.guides-art img{width:100%;filter:drop-shadow(0 12px 12px rgba(18,61,100,.11))}.promise-grid{grid-template-columns:1fr}.promise-grid article{min-height:0}.section-intro br{display:none}}
+    .guide-list{gap:15px}.guide-list>span{display:flex;flex-direction:column;gap:5px;padding:18px 19px;border:2px solid rgba(7,155,152,.12);box-shadow:4px 5px 0 rgba(18,61,100,.06)}.guide-list>span:nth-child(1){background:#fff2b9}.guide-list>span:nth-child(2){background:#dff6f3}.guide-list>span:nth-child(3){background:#ffe3d6}.guide-list>span:nth-child(4){background:#e7edff}.guide-list span>span{display:block;background:none;padding:0;border-radius:0}.guide-list b{display:block;font-size:1.15rem}.guide-list>span>span{font-size:1.02rem;line-height:1.42}
+    .guides-preview-note{font-size:1rem!important;line-height:1.45;color:#405b70;margin:1rem 0 0;max-width:48ch;font-weight:700}
+    .promise-section{background:linear-gradient(180deg,#fff8e8 0%,#fffdf6 48%,#eef8ff 100%)}
+    .promise-copy{max-width:1040px;margin-bottom:48px}.human-service-promise{font-size:clamp(1.42rem,2vw,1.9rem)!important;line-height:1.35!important;font-weight:1000;max-width:790px;margin:28px auto 0!important;padding:22px 28px;background:#fff3bf;border:3px solid #f2bd35;border-radius:22px;box-shadow:7px 8px 0 rgba(240,100,35,.15);color:#123d64}
+    .promise-grid{grid-template-columns:repeat(3,1fr);max-width:1220px;gap:22px}.promise-grid article{min-height:170px;border:3px solid rgba(18,61,100,.1);padding:26px 27px;border-radius:25px;box-shadow:7px 8px 0 rgba(18,61,100,.08);transform:rotate(-.35deg)}.promise-grid article:nth-child(even){transform:rotate(.35deg)}.promise-grid b{font-size:1.28rem;line-height:1.15}.promise-grid p{font-size:1.08rem;line-height:1.5;margin-bottom:0}.promise-card-one{background:#fff1a9!important}.promise-card-two{background:#d8f5f1!important}.promise-card-three{background:#ffdcd0!important}.promise-card-four{background:#dceeff!important}.promise-card-five{background:#eee1ff!important}.promise-card-six{background:#e8f2c9!important}.promise-card-one b{color:#a54c00}.promise-card-two b{color:#087c79}.promise-card-three b{color:#bd4d26}.promise-card-four b{color:#16689d}.promise-card-five b{color:#7046a0}.promise-card-six b{color:#527526}
+    .promise-bottom{max-width:1220px;margin-top:54px;gap:38px;flex-wrap:nowrap}.promise-bottom img{width:250px;flex:0 0 auto;filter:drop-shadow(0 14px 12px rgba(18,61,100,.12))}.promise-bottom>div{min-width:0}.promise-bottom b{font-size:1.35rem;margin-bottom:8px}.relationship-line{display:block;font-size:1.08rem!important;line-height:1.45;white-space:nowrap}
+    @media(max-width:1350px){.site-nav nav{gap:24px}.site-nav nav a{font-size:1rem}.relationship-line{font-size:1rem!important}}
+    @media(max-width:1250px){.welcome-threshold{grid-template-columns:1fr;padding-right:5vw}.welcome-art{min-height:auto;margin-top:24px}.creator-place{width:min(900px,96%);margin:auto}.guides-section{grid-template-columns:1fr}.guides-art{min-height:auto}.guides-art img{width:min(820px,96%);margin:auto}.promise-bottom{max-width:1000px}.relationship-line{white-space:normal}}
+    @media(max-width:900px){.promise-grid{grid-template-columns:1fr 1fr}.promise-bottom{flex-direction:column;text-align:center}.promise-bottom img{width:min(310px,70vw)}.relationship-line{white-space:normal}.review-break{display:none}}
+    @media(max-width:620px){.welcome-art{min-height:auto;margin-top:32px}.creator-place{width:100%}.creator-place img{filter:drop-shadow(0 12px 12px rgba(18,61,100,.13))}.guides-art img{width:100%;filter:drop-shadow(0 12px 12px rgba(18,61,100,.11))}.guide-list{grid-template-columns:1fr}.promise-grid{grid-template-columns:1fr}.promise-grid article{min-height:0;transform:none!important}.human-service-promise{font-size:1.24rem!important;padding:20px 18px}.section-intro br{display:none}}
   `;
   document.head.appendChild(style);
 
