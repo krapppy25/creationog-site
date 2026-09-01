@@ -11,10 +11,20 @@
       .creator-place{width:min(780px,100%);display:flex;align-items:center;justify-content:center;position:relative}
       .creator-place:before{content:"";position:absolute;width:78%;height:70%;border-radius:50%;background:radial-gradient(circle,rgba(255,248,205,.72),rgba(255,255,255,.18) 58%,transparent 72%);filter:blur(10px)}
       .creator-place img{position:relative;z-index:1;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 20px 20px rgba(18,61,100,.16))}
-      @media(max-width:1250px){.welcome-threshold{grid-template-columns:1fr;padding-right:5vw}.welcome-art{min-height:auto;margin-top:24px}.creator-place{width:min(900px,96%);margin:auto}}
-      @media(max-width:620px){.welcome-art{min-height:auto;margin-top:32px}.creator-place{width:100%}.creator-place img{filter:drop-shadow(0 12px 12px rgba(18,61,100,.13))}}
+      .guides-section{grid-template-columns:minmax(480px,.95fr) minmax(0,1.05fr);gap:54px;background:linear-gradient(135deg,#fff 0%,#fffdf6 52%,#eef9f5 100%)}
+      .guides-art{min-height:560px;display:flex;align-items:center;justify-content:center}
+      .guides-art img{width:min(720px,100%);max-height:none;margin:0;object-fit:contain;filter:drop-shadow(0 20px 18px rgba(18,61,100,.14))}
+      .og-guides-mark{display:none!important}
+      @media(max-width:1250px){.welcome-threshold{grid-template-columns:1fr;padding-right:5vw}.welcome-art{min-height:auto;margin-top:24px}.creator-place{width:min(900px,96%);margin:auto}.guides-section{grid-template-columns:1fr}.guides-art{min-height:auto}.guides-art img{width:min(820px,96%);margin:auto}}
+      @media(max-width:620px){.welcome-art{min-height:auto;margin-top:32px}.creator-place{width:100%}.creator-place img{filter:drop-shadow(0 12px 12px rgba(18,61,100,.13))}.guides-art img{width:100%;filter:drop-shadow(0 12px 12px rgba(18,61,100,.11))}}
     `;
     document.head.appendChild(style);
+  }
+
+  /* WP-008 — The OG Guides / Shine the Light. */
+  const guidesArt=document.querySelector('.guides-art');
+  if(guidesArt){
+    guidesArt.innerHTML='<img src="og-guides-shine-the-light.png" alt="The Creation OG sunshine wearing dark lenses and exploring one living seedling through many perspectives, including roots, pollination, patterns and the wider living world">';
   }
 
   const panel=document.querySelector('[data-guides-panel]');
