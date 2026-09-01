@@ -27,10 +27,19 @@
   // Make section anchors land below the sticky navigation.
   document.querySelectorAll('section[id]').forEach(s=>s.style.scrollMarginTop='105px');
 
+  // Preserve the intentional two-line portal introduction while guaranteeing
+  // a visible word space at narrow widths. The desktop <br> can otherwise sit
+  // directly between "conditions" and "for" in some mobile layout engines.
+  const portalIntro = document.querySelector('.portals-section .section-intro > p:not(.eyebrow):not(.portal-guidance)');
+  if (portalIntro) {
+    portalIntro.innerHTML = 'Each portal opens a different set of conditions<span class="portal-word-space"> </span><br>for attention, reflection and creation.';
+  }
+
   const style = document.createElement('style');
   style.textContent = `
     :focus-visible{outline:4px solid #ffc83d!important;outline-offset:4px!important}
     button,a,select,input,textarea{touch-action:manipulation}
+    .portal-word-space{white-space:pre}
     .mobile-nav-toggle{display:none;border:2px solid #123d64;background:#fffdf6;color:#123d64;border-radius:999px;padding:10px 14px;font-weight:1000;letter-spacing:.05em;cursor:pointer}
     @media(max-width:1050px){
       .site-nav{display:grid!important;grid-template-columns:auto 1fr auto;align-items:center;gap:12px!important;padding:12px 4vw!important}
