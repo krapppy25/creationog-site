@@ -1,4 +1,22 @@
 (() => {
+  /* WP-007B — The Creator's Place: replace the temporary hero art at runtime
+     while preserving the approved text-free production asset. */
+  const hero=document.querySelector('.welcome-art');
+  if(hero){
+    hero.innerHTML='<div class="creator-place"><img src="hero-creators-place.png" alt="A handcrafted Creation OG welcome place with a smiling sun, creative tools, living plants and an intentionally blank card waiting for what the visitor brings"></div>';
+    const style=document.createElement('style');
+    style.textContent=`
+      .welcome-threshold{grid-template-columns:minmax(0,.98fr) minmax(520px,1.12fr);gap:28px;padding-right:2.5vw}
+      .welcome-art{min-height:590px;display:flex;align-items:center;justify-content:center;overflow:visible}
+      .creator-place{width:min(780px,100%);display:flex;align-items:center;justify-content:center;position:relative}
+      .creator-place:before{content:"";position:absolute;width:78%;height:70%;border-radius:50%;background:radial-gradient(circle,rgba(255,248,205,.72),rgba(255,255,255,.18) 58%,transparent 72%);filter:blur(10px)}
+      .creator-place img{position:relative;z-index:1;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 20px 20px rgba(18,61,100,.16))}
+      @media(max-width:1250px){.welcome-threshold{grid-template-columns:1fr;padding-right:5vw}.welcome-art{min-height:auto;margin-top:24px}.creator-place{width:min(900px,96%);margin:auto}}
+      @media(max-width:620px){.welcome-art{min-height:auto;margin-top:32px}.creator-place{width:100%}.creator-place img{filter:drop-shadow(0 12px 12px rgba(18,61,100,.13))}}
+    `;
+    document.head.appendChild(style);
+  }
+
   const panel=document.querySelector('[data-guides-panel]');
   const backdrop=document.querySelector('[data-guides-backdrop]');
   const openers=[...document.querySelectorAll('[data-guides]')];
