@@ -8,3 +8,8 @@
 .music-home{grid-template-columns:1.2fr 1fr}.music-home-pair{display:grid;grid-template-columns:1fr 1fr;gap:26px;max-width:700px;transform:none}.music-home-pair figure{margin:0;min-width:0}.music-home-pair a{text-decoration:none}.music-home-pair img{box-shadow:7px 8px 0 #ffc83d}.music-home-pair figcaption{font-weight:900;font-size:1rem;line-height:1.4;margin-top:22px}.music-home-pair figcaption span{display:block;font-size:.9rem;color:#075e9e;margin-top:8px}.music-track-feature{display:grid;grid-template-columns:.85fr 1.25fr;align-items:center;gap:5vw;border-top:1px solid #e7d7b7}.music-track-art img{border-radius:14px;box-shadow:9px 10px 0 #ffc83d}.music-cover a{display:block;border-radius:12px}
 @media(max-width:1000px){.music-home{grid-template-columns:1fr}.music-home-pair{width:100%;margin:0 auto}.music-home-copy{max-width:750px}.music-track-feature{gap:35px;grid-template-columns:.8fr 1.2fr}}
 @media(max-width:680px){.music-home-pair{grid-template-columns:1fr;gap:38px;width:88%;max-width:390px}.music-home-pair figcaption{margin-top:20px}.music-track-feature{grid-template-columns:1fr;gap:38px}.music-track-art{width:90%;max-width:390px;margin:0 auto}}
+
+/* Three featured releases, in the creator's chosen order. */
+.music-home{grid-template-columns:1.65fr 1fr}.music-home-pair{grid-template-columns:repeat(3,minmax(0,1fr));max-width:950px;gap:22px}.music-law-feature{background:#fff4da}
+@media(max-width:1000px){.music-home{grid-template-columns:1fr}}
+@media(max-width:680px){.music-home-pair{grid-template-columns:1fr;max-width:390px;gap:38px}}
