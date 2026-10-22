@@ -1,0 +1,17 @@
+#before-we-name-it{--viz-series-1:#087f7c;--background:var(--paper);--border:#c6ded4;max-width:720px;margin:0 auto}
+#before-we-name-it [hidden]{display:none!important}
+.meaning-experience .wave-heading-row{margin-bottom:28px}
+#before-we-name-it .viz-controls{display:flex;flex-wrap:wrap;gap:12px}
+#before-we-name-it button{line-height:1.4;max-width:100%}
+#meaning-step{font-weight:800;color:var(--navy)}
+#before-we-name-it .text-small{font-size:.9rem;line-height:1.5}
+#before-we-name-it .text-center{text-align:center}
+#meaning-cycle{font-variant-numeric:tabular-nums;color:#405b70;margin-top:20px}
+#meaning-label{font-size:clamp(1.6rem,5vw,2.3rem);line-height:1.2;color:var(--navy);text-wrap:balance}
+#before-we-name-it .form-label{display:block;font-weight:800;line-height:1.5;margin-bottom:10px}
+#before-we-name-it textarea{display:block;box-sizing:border-box;width:100%;padding:14px;font:inherit;font-size:1rem;line-height:1.5;border:1px solid #9aafa8;border-radius:12px;background:#fffef9;color:var(--ink);resize:vertical}
+#before-we-name-it summary{cursor:pointer;font-weight:800;line-height:1.5;padding:12px 0}
+#before-we-name-it li{line-height:1.7}
+#before-we-name-it .text-muted{color:#405b70}
+.meaning-links{display:flex;flex-wrap:wrap;gap:18px 32px;font-size:1rem;margin-top:28px}
+@media(max-width:480px){#before-we-name-it button{font-size:.9rem;padding:13px 16px}.meaning-experience .wave-heading-row{gap:12px}}
