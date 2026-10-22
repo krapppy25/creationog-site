@@ -25,7 +25,7 @@
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
     interferenceValues[i] = seed / 4294967296 * 2 - 1;
   }
-  let state = { ...defaults }, source = null, context = null, audioPending = false, audioToken = 0, renderQueued = false;
+  let state = { ...defaults }, source = null, audioPending = false, audioToken = 0, renderQueued = false;
   const plot = root.querySelector('#wave-plot'), detail = root.querySelector('#wave-detail');
   const play = root.querySelector('#wave-play'), audioStatus = root.querySelector('#wave-audio-status');
   const ns = 'http://www.w3.org/2000/svg';
@@ -69,9 +69,13 @@
     if (source) {
       const oldSource = source;
       source = null;
-      oldSource.onended = null;
-      try { oldSource.stop(); } catch (_) { /* An ended source is already silent. */ }
-      oldSource.disconnect();
+      clearTimeout(oldSource.timer);
+      const element = oldSource.element;
+      element.onplaying = element.onended = element.onerror = null;
+      element.pause();
+      element.removeAttribute('src');
+      element.load();
+      URL.revokeObjectURL(oldSource.url);
     }
     play.textContent = 'Listen for 3 seconds';
     play.setAttribute('aria-pressed', 'false');
@@ -160,49 +164,66 @@
   for (const key of keys) inputs[key].addEventListener('input', () => change({ ...state, [key]: Number(inputs[key].value) }));
   root.querySelectorAll('[data-example]').forEach(button => button.addEventListener('click', () => change(presets[button.dataset.example])));
   play.setAttribute('aria-pressed', 'false');
-  play.addEventListener('click', async () => {
+  function audioFile(settings) {
+    // PCM WAV keeps the generated sample on ordinary media playback. On iPhone,
+    // a bare Web Audio context can follow the ringer/silent channel instead.
+    const count = sampleRate * 3, bytes = new ArrayBuffer(44 + count * 2);
+    const view = new DataView(bytes);
+    const writeText = (offset, text) => {
+      for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+    };
+    writeText(0, 'RIFF'); view.setUint32(4, bytes.byteLength - 8, true);
+    writeText(8, 'WAVE'); writeText(12, 'fmt '); view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+    view.setUint32(24, sampleRate, true); view.setUint32(28, sampleRate * 2, true);
+    view.setUint16(32, 2, true); view.setUint16(34, 16, true);
+    writeText(36, 'data'); view.setUint32(40, count * 2, true);
+    let audioSeed = 731129;
+    for (let i = 0; i < count; i++) {
+      audioSeed = (Math.imul(audioSeed, 1664525) + 1013904223) >>> 0;
+      const interference = (audioSeed / 4294967296 * 2 - 1) * settings.interference;
+      const envelope = Math.min(1, i / (sampleRate * .015), (count - 1 - i) / (sampleRate * .015));
+      const sample = .08 * (signal(i / sampleRate, settings)[2] + interference) * envelope;
+      view.setInt16(44 + i * 2, Math.round(Math.max(-1, Math.min(1, sample)) * 32767), true);
+    }
+    return new Blob([bytes], { type: 'audio/wav' });
+  }
+  play.addEventListener('click', () => {
     if (source || audioPending) { stopAudio(); return; }
+    if (document.hidden) return;
     const token = ++audioToken;
     audioPending = true;
     play.textContent = 'Stop audio';
     play.setAttribute('aria-pressed', 'true');
     audioStatus.textContent = 'Starting audio…';
     try {
-      const Audio = window.AudioContext || window.webkitAudioContext;
-      if (!Audio) throw new Error('Web Audio unavailable');
-      context = context || new Audio();
-      await context.resume();
-      if (token !== audioToken || document.hidden) return;
       const snapshot = { ...state };
-      const buffer = context.createBuffer(1, sampleRate * 3, sampleRate), data = buffer.getChannelData(0);
-      let audioSeed = 731129;
-      for (let i = 0; i < data.length; i++) {
-        audioSeed = (Math.imul(audioSeed, 1664525) + 1013904223) >>> 0;
-        const interference = (audioSeed / 4294967296 * 2 - 1) * snapshot.interference;
-        const envelope = Math.min(1, i / (sampleRate * .015), (data.length - 1 - i) / (sampleRate * .015));
-        data[i] = .08 * (signal(i / sampleRate, snapshot)[2] + interference) * envelope;
-      }
-      if (token !== audioToken || document.hidden) return;
-      const currentSource = context.createBufferSource();
-      currentSource.buffer = buffer;
-      currentSource.connect(context.destination);
-      currentSource.onended = () => {
-        currentSource.disconnect();
-        if (token !== audioToken || source !== currentSource) return;
-        source = null;
-        play.textContent = 'Listen for 3 seconds';
-        play.setAttribute('aria-pressed', 'false');
-        audioStatus.textContent = 'Playback complete.';
-      };
+      const element = new window.Audio();
+      element.preload = 'auto';
+      element.setAttribute('playsinline', '');
+      const currentSource = { element, url: URL.createObjectURL(audioFile(snapshot)), timer: null };
       source = currentSource;
-      audioPending = false;
-      currentSource.start();
-      audioStatus.textContent = snapshot.f1 === snapshot.f2 && snapshot.a1 === snapshot.a2 && snapshot.phase === 180 && !snapshot.interference && !snapshot.fluctuation
-        ? 'Playing cancellation. Silence is expected.' : 'Playing the combined signal and any added interference.';
+      const isCurrent = () => token === audioToken && source === currentSource;
+      const fail = () => {
+        if (isCurrent()) stopAudio('Audio could not start. Tap Listen to retry, and check your media volume and sound output.');
+      };
+      element.onplaying = () => {
+        if (!isCurrent()) return;
+        clearTimeout(currentSource.timer);
+        audioPending = false;
+        audioStatus.textContent = snapshot.f1 === snapshot.f2 && snapshot.a1 === snapshot.a2 && snapshot.phase === 180 && !snapshot.interference && !snapshot.fluctuation
+          ? 'Playing cancellation. Silence is expected.' : 'Playing the combined signal and any added interference.';
+      };
+      element.onended = () => { if (isCurrent()) stopAudio('Playback complete.'); };
+      element.onerror = fail;
+      element.src = currentSource.url;
+      currentSource.timer = setTimeout(() => { if (audioPending) fail(); }, 8000);
+      // Call play inside the tap/click handler, before any await or media event.
+      // Some iPhone versions require this direct user-gesture connection.
+      const playback = element.play();
+      if (playback && typeof playback.catch === 'function') playback.catch(fail);
     } catch (_) {
-      if (token === audioToken) stopAudio('Audio is unavailable here. You can still explore the waves.');
-    } finally {
-      if (token === audioToken) audioPending = false;
+      if (token === audioToken) stopAudio('Audio could not start. Tap Listen to retry, and check your media volume and sound output.');
     }
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopAudio(); });
