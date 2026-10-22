@@ -19,7 +19,7 @@
 .wave-heading-row{display:flex;align-items:center;justify-content:space-between;gap:10px 20px;flex-wrap:wrap;margin-bottom:20px}
 .wave-badge{padding:4px 11px;border-radius:999px;background:#fff0ba;color:#704e08;font-size:.78rem;font-weight:900}
 .wave-tuning{font-size:.8rem;color:#405b70}
-.wave-presets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.wave-presets{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
 .wave-presets button{min-height:46px;padding:10px 12px;border:1px solid #b9c9cd;border-radius:12px;background:#fffdf6;color:var(--ink);font-size:.95rem;font-weight:900;line-height:1.25;cursor:pointer;transition:background .15s,border-color .15s}
 .wave-presets button:hover{background:#eef7f3;border-color:#5f8f97}
 .wave-presets button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
@@ -31,7 +31,7 @@
 .wave-legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.78rem;line-height:1.4}
 .wave-legend>span{display:inline-flex;align-items:center;gap:7px}
 .wave-key{display:inline-block;width:24px;border-top:3px solid}
-.wave-key-a{border-color:#075e9e}.wave-key-b{border-color:#b24810;border-top-style:dashed}.wave-key-sum{border-color:#08776d}.wave-key-noise{border-color:#7650a5}
+.wave-key-a{border-color:#075e9e}.wave-key-b{border-color:#b24810;border-top-style:dashed}.wave-key-sum{border-color:#08776d}.wave-key-interference{border-color:#7650a5}
 .wave-plot{width:100%;min-width:0;margin-top:17px}
 .wave-chart{display:block;width:100%;height:auto;overflow:visible}
 .wave-chart text{fill:var(--ink);font:13px "Trebuchet MS",Arial,sans-serif}
@@ -57,3 +57,13 @@
 @media(max-width:680px){.wave-nav{align-items:flex-start;flex-direction:column;gap:12px}.wave-nav nav{gap:4px 20px}.wave-main{padding-top:32px}.wave-experience{padding:20px 20px 0}.wave-presets{grid-template-columns:repeat(2,minmax(0,1fr))}.wave-heading-row{margin-bottom:16px}.wave-control-grid{grid-template-columns:1fr;gap:16px}.wave-intro h1{margin-bottom:14px}.wave-reflection{margin-top:28px}}
 @media(max-width:400px){.wave-main{width:calc(100% - 28px)}.wave-experience{padding:18px 12px 0;border-radius:16px}.wave-nav{padding:18px 18px}.wave-nav nav{gap:4px 15px}.wave-nav nav a{font-size:.8rem}.wave-presets{gap:8px}.wave-presets button{font-size:.88rem;padding:10px 7px}.wave-tuning{font-size:.76rem}.wave-legend{gap:8px 13px;font-size:.74rem}.wave-key{width:19px}}
 @media(prefers-reduced-motion:reduce){.wave-page{scroll-behavior:auto}.wave-presets button{transition:none}}
+
+.wave-interference-control{background:#f3f6f0;border:1px solid #d6ddd6;border-radius:12px;padding:14px 16px;margin:0 0 20px}
+.wave-interference-control label{display:flex;justify-content:space-between;gap:12px;font-size:.9rem;font-weight:900}
+.wave-interference-control output{font-variant-numeric:tabular-nums}
+.wave-interference-control input{display:block;width:100%;height:42px;margin:2px 0;accent-color:#7650a5;cursor:pointer}
+.wave-interference-control p{font-size:.82rem;line-height:1.5;margin:0;color:#405b70}
+.wave-meaning{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:22px 0}
+.wave-meaning summary{padding:16px 0;cursor:pointer;font-weight:900;line-height:1.5}
+.wave-meaning p{font-size:.9rem}
+.wave-meaning .wave-reading{font-size:.8rem;color:#405b70}

@@ -25,7 +25,7 @@
       <p class="eyebrow">A CREATION OG PERCEPTION EXPERIENCE</p>
       <h1 id="wave-title">Wave Mapping</h1>
       <p class="wave-invitation">Change a wave. See the difference.<br>Hear the difference.</p>
-      <p class="wave-intro-note">Choose an example and notice how two simple signals change when they meet.</p>
+      <p class="wave-intro-note">What becomes easier to perceive when interference is reduced? Choose an example, change one thing, and notice.</p>
     </section>
     <section id="wave-experience" class="wave-experience" aria-label="Interactive wave demonstration">
       <div class="wave-heading-row"><span class="wave-badge">Educational simulation</span><span class="wave-tuning">Musical tuning · A4 = 432 Hz</span></div>
@@ -33,9 +33,15 @@
         <button type="button" data-example="reinforce" aria-pressed="true">Reinforce</button>
         <button type="button" data-example="cancel" aria-pressed="false">Cancel</button>
         <button type="button" data-example="harmonic" aria-pressed="false">Different Pitches</button>
-        <button type="button" data-example="noise" aria-pressed="false">Add Noise</button>
+        <button type="button" data-example="interference" aria-pressed="false">Add Interference</button>
+        <button type="button" data-example="shifting" aria-pressed="false">Shifting Phase</button>
       </div>
       <p id="wave-detail" class="wave-detail" aria-live="polite">Matching waves reinforce each other.</p>
+      <div class="wave-interference-control">
+        <label for="wave-interference">Added interference <output id="wave-interference-value" for="wave-interference">0.00</output></label>
+        <input id="wave-interference" type="range" min="0" max="0.75" step="0.05" value="0" aria-describedby="wave-interference-help">
+        <p id="wave-interference-help">Try <strong>Add Interference</strong>, then move the slider left. The underlying waves stay the same. Listen again to compare.</p>
+      </div>
       <div class="wave-listen-row">
         <button type="button" id="wave-play" class="wave-listen" aria-describedby="wave-audio-status">Listen for 3 seconds</button>
         <span id="wave-audio-status" class="wave-audio-status" aria-live="polite">Sound starts when you choose. Begin at a low volume.</span>
@@ -44,10 +50,10 @@
         <span><i class="wave-key wave-key-a" aria-hidden="true"></i>A · solid</span>
         <span><i class="wave-key wave-key-b" aria-hidden="true"></i>B · dashed</span>
         <span><i class="wave-key wave-key-sum" aria-hidden="true"></i>Combined signal</span>
-        <span><i class="wave-key wave-key-noise" aria-hidden="true"></i>Signal + noise</span>
+        <span><i class="wave-key wave-key-interference" aria-hidden="true"></i>Signal + interference</span>
       </div>
       <div id="wave-plot" class="wave-plot"></div>
-      <noscript><p>This interactive experience needs JavaScript. With matching waves, their amplitudes add. Equal waves with opposite phase cancel. Added noise changes the observed signal.</p></noscript>
+      <noscript><p>This interactive experience needs JavaScript. Matching waves reinforce. Equal waves with opposite phase cancel. Both can be coherent. Added random interference obscures the combined signal.</p></noscript>
       <details class="wave-settings">
         <summary>Explore the settings</summary>
         <p class="wave-settings-note">Move between musical notes from 108–864 Hz. All notes use A4 = 432 Hz with twelve equal semitones per octave.</p>
@@ -69,12 +75,22 @@
         </div>
         <div class="wave-control-grid wave-extra-controls">
           <div><label for="wave-phase">B phase relative to A <output id="wave-phase-value" for="wave-phase">0°</output></label><input id="wave-phase" type="range" min="0" max="360" step="5" value="0"></div>
-          <div><label for="wave-noise">Noise amplitude <output id="wave-noise-value" for="wave-noise">0.00</output></label><input id="wave-noise" type="range" min="0" max="0.75" step="0.05" value="0"></div>
+          <div><label for="wave-fluctuation">Phase fluctuation <output id="wave-fluctuation-value" for="wave-fluctuation">0%</output></label><input id="wave-fluctuation" type="range" min="0" max="1" step="0.1" value="0" aria-describedby="wave-phase-help"></div>
         </div>
+        <p id="wave-phase-help" class="wave-settings-note">At 0%, B keeps its chosen phase offset. Increasing fluctuation varies that offset over time. The pitch controls set A432 carrier notes; fluctuating phase and random interference add other frequency components.</p>
       </details>
     </section>
     <section class="wave-reflection" aria-labelledby="wave-reflection-title">
       <h2 id="wave-reflection-title">What did you notice?</h2>
+      <p>Could you follow the underlying pattern more easily with less interference? Compare <strong>Reinforce</strong> with <strong>Shifting Phase</strong> too. What changes in the shape, the sound, or your attention?</p>
+      <p>Across Nathan Garrett’s books, coherence describes coordination that supports perception and response while allowing difference. Reducing interference creates room to recognize what is already present. This experience offers a small, tangible way to explore that theme.</p>
+      <details class="wave-meaning">
+        <summary>Coherence, interference, and this example</summary>
+        <p>For these equal-pitch waves, coherence means a stable relative phase. <strong>Reinforce</strong> and <strong>Cancel</strong> both have it. <strong>Shifting Phase</strong> models reduced coherence by varying B’s phase. Different pitches can form an orderly pattern too.</p>
+        <p>The interference slider adds a separate random disturbance to the combined signal. Reducing it reveals the known signal without changing the sources’ coherence. In physics, interference also includes the reinforcing and cancelling of waves; it is not always an obstacle.</p>
+        <p>The books use these ideas more broadly to explore human experience. A generated wave is an analogy for that exploration, not a measurement of a person’s inner state.</p>
+        <p class="wave-reading">Book connections: <cite>The Frequency of Love</cite>, chapter 12; <cite>The Physics of Forgiveness, Compassion &amp; Presence</cite>, “Why Coherence Matters”; <cite>The Master of Energy &amp; The Holy Grail</cite>, pp. 102–103. Wave definitions: <a href="https://openstax.org/books/university-physics-volume-3/pages/3-1-youngs-double-slit-interference">OpenStax</a>.</p>
+      </details>
       <p>Here, the signals are generated, so we know what went into them. In the wider Wave Mapping research, the next question is which patterns in real observations hold up when tested.</p>
       <p class="wave-boundary">This experience demonstrates wave relationships. It does not forecast real-world events.</p>
       <a href="../#perception">Explore another perspective →</a>

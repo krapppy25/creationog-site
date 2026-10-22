@@ -2,7 +2,7 @@
   'use strict';
   const root = document.getElementById('wave-experience');
   if (!root) return;
-  const keys = ['f1', 'a1', 'f2', 'a2', 'phase', 'noise'];
+  const keys = ['f1', 'a1', 'f2', 'a2', 'phase', 'interference', 'fluctuation'];
   const inputs = Object.fromEntries(keys.map(key => [key, root.querySelector('#wave-' + key)]));
   const noteFrequency = index => 432 * 2 ** ((index - 24) / 12);
   const noteName = index => {
@@ -10,19 +10,20 @@
     return ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'][midi % 12] + (Math.floor(midi / 12) - 1);
   };
   // Pitch controls store semitone indices: A2 (0) through A5 (36).
-  const defaults = { f1: 12, a1: 1, f2: 12, a2: 1, phase: 0, noise: 0 };
+  const defaults = { f1: 12, a1: 1, f2: 12, a2: 1, phase: 0, interference: 0, fluctuation: 0 };
   const presets = {
     reinforce: { ...defaults },
     cancel: { ...defaults, phase: 180 },
     harmonic: { ...defaults, f2: 19 },
-    noise: { ...defaults, phase: 90, noise: .55 }
+    interference: { ...defaults, interference: .65 },
+    shifting: { ...defaults, fluctuation: 1 }
   };
   const sampleRate = 48000, duration = .025, samples = Math.round(sampleRate * duration) + 1;
-  const noiseValues = new Float64Array(samples);
+  const interferenceValues = new Float64Array(samples);
   let seed = 731129;
   for (let i = 0; i < samples; i++) {
     seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-    noiseValues[i] = seed / 4294967296 * 2 - 1;
+    interferenceValues[i] = seed / 4294967296 * 2 - 1;
   }
   let state = { ...defaults }, source = null, context = null, audioPending = false, audioToken = 0, renderQueued = false;
   const plot = root.querySelector('#wave-plot'), detail = root.querySelector('#wave-detail');
@@ -34,17 +35,31 @@
     if (text !== undefined) node.textContent = text;
     return node;
   };
+  // Repeatable, smoothly interpolated phase targets every 4 ms. The plot and
+  // audio use the same function; this changes phase stability, not the tuning reference.
+  function varyingPhase(time) {
+    const position = time * 250, index = Math.floor(position), fraction = position - index;
+    const target = n => {
+      if (n === 0) return 0;
+      let hash = Math.imul(n ^ 731129, 0x45d9f3b);
+      hash = Math.imul(hash ^ (hash >>> 16), 0x45d9f3b);
+      return (((hash ^ (hash >>> 16)) >>> 0) / 4294967296 * 2 - 1) * Math.PI;
+    };
+    const smooth = fraction * fraction * (3 - 2 * fraction);
+    return target(index) * (1 - smooth) + target(index + 1) * smooth;
+  }
   function signal(time, settings = state) {
     const a = settings.a1 * Math.sin(2 * Math.PI * noteFrequency(settings.f1) * time);
-    const b = settings.a2 * Math.sin(2 * Math.PI * noteFrequency(settings.f2) * time + settings.phase * Math.PI / 180);
+    const b = settings.a2 * Math.sin(2 * Math.PI * noteFrequency(settings.f2) * time + settings.phase * Math.PI / 180 + settings.fluctuation * varyingPhase(time));
     return [a, b, a + b];
   }
   function description() {
-    if (state.a1 === 0 && state.a2 === 0) return state.noise ? 'Both inputs are silent; only the added noise remains.' : 'Both inputs are silent.';
-    if (state.a1 === 0 || state.a2 === 0) return state.noise ? 'One wave remains, with noise added to the signal.' : 'One wave remains; the other has zero amplitude.';
-    if (state.f1 === state.f2 && state.a1 === state.a2 && state.phase === 180) return state.noise ? 'The two waves cancel; only the added noise remains.' : 'Equal, opposite waves cancel. Silence is the expected result.';
-    if (state.f1 === state.f2 && (state.phase === 0 || state.phase === 360)) return state.noise ? 'Matching waves reinforce each other; noise changes the signal.' : 'Matching waves reinforce each other.';
-    if (state.noise) return 'Noise obscures the known combined signal.';
+    if (state.a1 === 0 && state.a2 === 0) return state.interference ? 'Both inputs are silent; only the added interference remains.' : 'Both inputs are silent.';
+    if (state.a1 === 0 || state.a2 === 0) return state.interference ? 'One wave remains, with interference added to the signal.' : 'One wave remains; the other has zero amplitude.';
+    if (state.fluctuation) return 'B’s phase fluctuates over time, modeling reduced coherence. Compare with Reinforce.' + (state.interference ? ' Random interference is also added.' : '');
+    if (state.f1 === state.f2 && state.a1 === state.a2 && state.phase === 180) return state.interference ? 'The two waves cancel; only the added interference remains.' : 'Equal, opposite waves cancel. Their stable phase relationship is coherent; silence is expected.';
+    if (state.f1 === state.f2 && (state.phase === 0 || state.phase === 360)) return state.interference ? 'The coherent inputs stay unchanged; added random interference obscures their combined signal.' : 'Matching waves reinforce each other. Their stable phase relationship is coherent.';
+    if (state.interference) return 'Interference obscures the known combined signal.';
     if (state.f1 !== state.f2) return 'Different pitches create a changing combined shape.';
     return 'Changing phase changes how much the waves reinforce.';
   }
@@ -65,9 +80,9 @@
   function sync() {
     for (const key of keys) {
       inputs[key].value = String(state[key]);
-      const value = key[0] === 'f'
+      const value = (key === 'f1' || key === 'f2')
         ? noteName(state[key]) + ' · ' + Number(noteFrequency(state[key]).toFixed(2)) + ' Hz'
-        : key === 'phase' ? state[key] + '°' : state[key].toFixed(2);
+        : key === 'phase' ? state[key] + '°' : key === 'fluctuation' ? Math.round(state[key] * 100) + '%' : state[key].toFixed(2);
       root.querySelector('#wave-' + key + '-value').textContent = value;
       inputs[key].setAttribute('aria-valuetext', value);
     }
@@ -83,7 +98,7 @@
     for (const key of keys) {
       const value = Number(next[key]);
       state[key] = Number.isFinite(value) ? Math.min(Number(inputs[key].max), Math.max(Number(inputs[key].min), value)) : defaults[key];
-      if (key[0] === 'f') state[key] = Math.round(state[key]);
+      if ((key === 'f1' || key === 'f2')) state[key] = Math.round(state[key]);
     }
     sync();
   }
@@ -100,12 +115,12 @@
     const x = time => left + time / duration * frameWidth;
     const y = (value, row) => top + row * lane + frameHeight / 2 - value / amplitudeBound * (frameHeight / 2 - 4);
     const svg = svgElement('svg', { class: 'wave-chart', viewBox: `0 0 ${width} ${height}`, role: 'img', 'aria-labelledby': 'wave-chart-title wave-chart-desc' });
-    svg.append(svgElement('title', { id: 'wave-chart-title' }, 'Two waves, their combination and added noise'));
+    svg.append(svgElement('title', { id: 'wave-chart-title' }, 'Two waves, their combination and added interference'));
     svg.append(svgElement('desc', { id: 'wave-chart-desc' }, description() + ' The three panels share one relative amplitude scale and show 25 milliseconds.'));
     svg.append(svgElement('text', { x: left, y: 14 }, 'Amplitude · relative units'));
     const defs = svgElement('defs');
     svg.append(defs);
-    ['Inputs A and B', 'Combined signal A + B', 'Signal with added noise'].forEach((label, row) => {
+    ['Inputs A and B', 'Combined signal A + B', 'Signal + interference'].forEach((label, row) => {
       const panelTop = top + row * lane;
       svg.append(svgElement('text', { x: left, y: panelTop - 8, class: 'wave-panel-title' }, label));
       const clip = svgElement('clipPath', { id: 'wave-clip-' + row });
@@ -127,7 +142,7 @@
     const arrays = [[], [], [], []];
     for (let i = 0; i < samples; i++) {
       const [a, b, sum] = signal(i / sampleRate);
-      arrays[0].push(a); arrays[1].push(b); arrays[2].push(sum); arrays[3].push(sum + state.noise * noiseValues[i]);
+      arrays[0].push(a); arrays[1].push(b); arrays[2].push(sum); arrays[3].push(sum + state.interference * interferenceValues[i]);
     }
     const path = (values, row, color, dash = '', weight = 1.8) => {
       let d = '';
@@ -163,9 +178,9 @@
       let audioSeed = 731129;
       for (let i = 0; i < data.length; i++) {
         audioSeed = (Math.imul(audioSeed, 1664525) + 1013904223) >>> 0;
-        const noise = (audioSeed / 4294967296 * 2 - 1) * snapshot.noise;
+        const interference = (audioSeed / 4294967296 * 2 - 1) * snapshot.interference;
         const envelope = Math.min(1, i / (sampleRate * .015), (data.length - 1 - i) / (sampleRate * .015));
-        data[i] = .08 * (signal(i / sampleRate, snapshot)[2] + noise) * envelope;
+        data[i] = .08 * (signal(i / sampleRate, snapshot)[2] + interference) * envelope;
       }
       if (token !== audioToken || document.hidden) return;
       const currentSource = context.createBufferSource();
@@ -182,8 +197,8 @@
       source = currentSource;
       audioPending = false;
       currentSource.start();
-      audioStatus.textContent = snapshot.f1 === snapshot.f2 && snapshot.a1 === snapshot.a2 && snapshot.phase === 180 && !snapshot.noise
-        ? 'Playing cancellation. Silence is expected.' : 'Playing the combined signal and any added noise.';
+      audioStatus.textContent = snapshot.f1 === snapshot.f2 && snapshot.a1 === snapshot.a2 && snapshot.phase === 180 && !snapshot.interference && !snapshot.fluctuation
+        ? 'Playing cancellation. Silence is expected.' : 'Playing the combined signal and any added interference.';
     } catch (_) {
       if (token === audioToken) stopAudio('Audio is unavailable here. You can still explore the waves.');
     } finally {
