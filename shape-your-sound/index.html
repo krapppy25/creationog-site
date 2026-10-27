@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shape Your Sound — Creation OG</title>
+  <meta name="description" content="One note. Many ways to hear it. Explore how resonance shapes vowel-like sounds, see their frequencies, and make a sound recipe of your own.">
+  <link rel="canonical" href="https://www.creationog.com/shape-your-sound/">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/music-lab.css?v=20260930-law">
+  <link rel="stylesheet" href="../assets/comedy.css?v=20261001b">
+  <link rel="stylesheet" href="../assets/wave-mapping.css?v=20261022-brand1">
+  <link rel="stylesheet" href="../assets/shape-your-sound.css?v=20261027-1">
+  <script src="../assets/voice-model.js?v=20261027-1" defer></script>
+  <script src="../assets/shape-your-sound.js?v=20261027-1" defer></script>
+</head>
+<body class="wave-page sound-page" id="top">
+  <a class="wave-skip" href="#sound-hear">Skip to the sound experience</a>
+  <header class="site-nav"><a class="brand" href="../#top" aria-label="Creation OG home"><img src="../003_creation_og_wordmark.webp" alt="Creation OG"></a><nav aria-label="Main navigation"><a href="../#portals">Start Here</a><a href="../music-lab/">Music Lab</a><a href="../human-comedy-department/">Comedy</a><a href="../#perception">Perception Experience</a><a href="../#guides">OG Guides</a><a href="../#promise">Our Promise</a><a href="../#clubhouse">Clubhouse</a></nav><button class="guides-button" data-guides>✦ Ask the OG Guides<span>Guidance when you want it.</span></button></header>
+  <main class="wave-main sound-main" id="cog-shape-sound">
+    <section class="wave-intro" aria-labelledby="sound-title">
+      <p class="eyebrow">A CREATION OG PERCEPTION EXPERIENCE</p>
+      <h1 id="sound-title">Shape<br>your <span>sound.</span></h1>
+      <div class="wave-intro-copy">
+        <p class="wave-invitation">One note.<br>Many ways to hear it.</p>
+        <p class="wave-intro-note">Discover what changes a sound’s character.<br>Then make a sound of your own.</p>
+        <div class="sound-steps" aria-label="Experience steps"><a href="#sound-hear">01 · Hear</a><a href="#sound-see">02 · See</a><a href="#sound-create">03 · Create</a></div>
+      </div>
+    </section>
+    <section id="sound-hear" class="wave-experience sound-experience" aria-labelledby="sound-hear-title">
+      <div class="wave-heading-row"><span class="wave-badge">Discover &amp; create</span><span class="wave-tuning">One base note · A3 = 216 Hz · A4 = 432 tuning</span></div>
+      <div class="sound-section-title"><span class="sound-number" aria-hidden="true">01</span><div><h2 id="sound-hear-title">Listen to the difference.</h2><p>Choose a shape for the sound. The base note stays the same.</p></div></div>
+      <div class="sound-presets" role="group" aria-label="Vowel-like sound presets">
+        <button type="button" data-sound-preset="ah" aria-pressed="true"><strong>ah</strong><span>as in “father”</span></button>
+        <button type="button" data-sound-preset="oh" aria-pressed="false"><strong>oh</strong><span>as in “go”</span></button>
+        <button type="button" data-sound-preset="ee" aria-pressed="false"><strong>ee</strong><span>as in “see”</span></button>
+      </div>
+      <p class="sound-model-note">These are synthesized vowel-like examples, not recordings of a human voice. Choose a preset, then listen.</p>
+      <div class="sound-play-row"><button type="button" id="sound-play" class="wave-listen">Listen · 9 seconds</button><button type="button" id="sound-stop" class="sound-secondary" disabled>Stop sound</button><span id="sound-status" role="status">Sound starts when you choose. Begin at a low volume.</span></div>
+      <div class="sound-volume"><label for="sound-volume">Playback volume <output id="sound-volume-value" for="sound-volume">70%</output></label><input id="sound-volume" type="range" min="0" max="1" step="0.05" value="0.7"></div>
+      <section id="sound-see" class="sound-see" aria-labelledby="sound-see-title">
+        <div class="sound-section-title"><span class="sound-number" aria-hidden="true">02</span><div><h2 id="sound-see-title">Notice what stands out.</h2><p>One sound contains many frequencies. Some are stronger than others.</p></div></div>
+        <div class="sound-chart-heading"><strong id="sound-spectrum-title">Your sound’s ingredients</strong><span id="sound-current">ah · base note 216 Hz</span></div>
+        <canvas id="sound-spectrum" width="1000" height="330" role="img" aria-label="Calculated frequency components of the selected synthesized sound." aria-describedby="sound-spectrum-note">A chart of the frequencies in the selected sound. A text explanation is below.</canvas>
+        <p id="sound-spectrum-note" class="sound-chart-note">Calculated components of the model, before playback. Taller bars mean stronger components. This is a graph of sound, not a picture of a mouth.</p>
+        <p class="sound-notice">What changed: the note, the character of the sound, or both?</p>
+      </section>
+      <section id="sound-create" class="sound-create" aria-labelledby="sound-create-title">
+        <div class="sound-section-title"><span class="sound-number" aria-hidden="true">03</span><div><h2 id="sound-create-title">Make it your own.</h2><p>Move the emphasis. Listen again. Follow what catches your ear.</p></div></div>
+        <div class="sound-sliders">
+          <div><label for="sound-f1">Lower emphasis <output id="sound-f1-value" for="sound-f1">750 Hz</output></label><input id="sound-f1" type="range" min="250" max="900" step="10" value="750" aria-describedby="sound-emphasis-help"></div>
+          <div><label for="sound-f2">Upper emphasis <output id="sound-f2-value" for="sound-f2">1200 Hz</output></label><input id="sound-f2" type="range" min="850" max="2800" step="10" value="1200" aria-describedby="sound-emphasis-help"></div>
+        </div>
+        <p id="sound-emphasis-help" class="sound-model-note">Each control moves a broad band of emphasis across the sound’s harmonics. The pitch source remains 216 Hz. These controls model resonance; they do not reproduce your mouth’s exact shape.</p>
+        <div class="sound-recipe-row"><button type="button" id="sound-save" class="sound-secondary">Save my sound recipe ↓</button><button type="button" id="sound-load" class="sound-secondary">Load a recipe</button><button type="button" id="sound-reset" class="sound-text-button">Reset to ah</button><input id="sound-file" type="file" accept="application/json,.json" hidden></div>
+        <p id="sound-recipe-status" class="sound-model-note" role="status">A recipe saves your settings as a small file. It does not record audio or upload anything.</p>
+      </section>
+      <details class="sound-mic">
+        <summary>Try your own voice</summary>
+        <p>Gently hold a comfortable note and move from “ah” toward “ee.” Notice how the frequency pattern changes. You can also keep exploring with the examples above.</p>
+        <div class="sound-play-row"><button type="button" id="sound-mic-start" class="sound-secondary">Use microphone · 30 seconds</button><button type="button" id="sound-mic-stop" class="sound-secondary" disabled>Stop microphone</button></div>
+        <p class="sound-model-note">Microphone access is optional. Sound is analyzed only in this page, never recorded, played back, or uploaded. The microphone stops after 30 seconds, when you leave this page, or when you choose Stop.</p>
+      </details>
+      <noscript><p>This experience needs JavaScript for its sound and controls. Changing the shape of the vocal tract changes the emphasis among frequencies in speech. A vowel does not have one universal frequency.</p></noscript>
+    </section>
+    <section class="wave-reflection" aria-labelledby="sound-reflection-title">
+      <h2 id="sound-reflection-title">You help give it form.</h2>
+      <p>First you noticed a relationship. Then you changed it. What did you discover—or create—that you want to hear again?</p>
+      <label class="sound-note-label" for="sound-reflection">A note to yourself, if you like</label><textarea id="sound-reflection" class="sound-reflection-input" rows="3" maxlength="3000" placeholder="What caught your ear?" autocomplete="off"></textarea>
+      <p class="sound-model-note">Your reflection stays in this page only. It is not submitted or saved with your recipe.</p>
+      <details class="wave-meaning"><summary>What is happening in this experience?</summary><p>In voiced speech, vibrating vocal folds provide a source. The throat, mouth, tongue, and lips help shape which frequencies reach a listener strongly. This simplified example starts with harmonics of 216 Hz and changes their relative strength.</p><p>The “ah,” “oh,” and “ee” settings are illustrative models. Actual voices vary with the person, language, accent, pitch, and delivery. There is no single universal frequency for a vowel.</p><p>While a generated sound plays, the graph shows its live audio spectrum. When stopped, it shows the calculated components of the current model. In microphone mode, it shows the incoming microphone signal. Rooms, microphones, and device processing affect that display.</p><p>The 432 Hz tuning reference sets the musical base note. Higher harmonics extend above it; they help create the sound’s character. The graph does not measure a person’s inner state or identify a spiritual quality.</p><p class="wave-reading">Explore the acoustics: <a href="https://phys.unsw.edu.au/jw/voice.html" target="_blank" rel="noopener">UNSW Acoustics Group · The science of speech and singing</a>.</p></details>
+      <div class="sound-next"><a href="../one-form-many-views/">One form. Many views. →</a><a href="../wave-mapping/">Explore Wave Mapping →</a><a href="../#perception">All perception experiences →</a></div>
+    </section>
+  </main>
+  <footer><strong>That’s OG.</strong><span>Be original.</span><span>Stay Human.</span><span>Create impact.</span><span>Listen.&nbsp;&nbsp;Never herd.</span></footer>
+  <div class="guides-panel" data-guides-panel hidden><button class="guides-close" data-guides-close aria-label="Close OG Guides preview">×</button><p class="eyebrow">OG GUIDES · FIRST-LOOK PREVIEW</p><h2>What are you bringing?</h2><p>This preview shows how different Guides can illuminate different parts of the same situation. <strong>It does not make the decision for you.</strong></p><div class="guide-starts"><button data-guide-mode="idea">I have an idea</button><button data-guide-mode="decision">I’m making a decision</button><button data-guide-mode="question">I have a question</button><button data-guide-mode="stuck">Something isn’t working</button><button data-guide-mode="curious">I’m just curious</button></div><div class="guide-response" data-guide-response><p><strong>Choose what you’re bringing.</strong></p><p>We’ll shine a few different lights on it.</p></div><p class="guides-boundary"><strong>First-look preview only.</strong> These are example Guide prompts, not the full OG Guides system. Nothing entered here is submitted or stored.</p></div><div class="guides-backdrop" data-guides-backdrop hidden></div>
+  <script src="../assets/first-encounter.js"></script>
+  <script src="../assets/launch-readiness.js"></script>
+</body>
+</html>
