@@ -5,6 +5,7 @@
   const $ = id => root.querySelector('#sound-' + id);
   const canvas = $('spectrum'), painter = canvas.getContext('2d');
   const play = $('play'), stopButton = $('stop'), micButton = $('mic-start'), micStop = $('mic-stop');
+  const createPlay = $('create-play'), createStop = $('create-stop'), createStatus = $('create-status');
   const status = $('status'), caption = $('spectrum-note'), chartTitle = $('spectrum-title');
   const controls = { f1: $('f1'), f2: $('f2'), volume: $('volume') };
   let state = model.clean(model.presets.ah), chosen = 'ah';
@@ -15,11 +16,13 @@
 
   function setMode(next) {
     mode = next;
-    play.disabled = next === 'starting';
-    stopButton.disabled = next === 'idle';
+    play.disabled = createPlay.disabled = !AudioCtor || next === 'starting';
+    stopButton.disabled = createStop.disabled = next === 'idle';
     micStop.disabled = next !== 'mic' && next !== 'mic-pending';
     micButton.disabled = next === 'mic-pending';
     play.textContent = next === 'synth' ? 'Restart · 9 seconds' : 'Listen · 9 seconds';
+    createPlay.textContent = next === 'synth' ? 'Restart my sound · 9 seconds' : 'Listen to my sound · 9 seconds';
+    createStatus.textContent = !AudioCtor ? 'Audio is unavailable in this browser. You can still shape and save the model.' : next === 'synth' ? 'Playing. Move either slider to change your sound.' : next === 'starting' ? 'Starting your sound…' : next === 'mic' || next === 'mic-pending' ? 'Microphone mode. Listening here switches to your model.' : 'Sound is off. Listen, then move either slider.';
     if (next === 'mic' || next === 'mic-pending') {
       chartTitle.textContent = 'Your microphone’s sound';
       caption.textContent = 'Live microphone spectrum. Rooms, microphones, and device processing affect this graph. Nothing is recorded or uploaded.';
@@ -241,7 +244,9 @@
     setState({ ...state, [key]: Number(input.value) }, key === 'volume' ? chosen : null);
   }));
   play.addEventListener('click', startSound);
+  createPlay.addEventListener('click', startSound);
   stopButton.addEventListener('click', () => stop());
+  createStop.addEventListener('click', () => stop());
   micButton.addEventListener('click', startMic);
   micStop.addEventListener('click', () => stop('Microphone is off.'));
   $('reset').addEventListener('click', () => { stop('Reset to ah. Choose Listen when you are ready.'); setState({ ...model.presets.ah, volume: state.volume }, 'ah'); });
@@ -270,8 +275,9 @@
   if ('ResizeObserver' in window) new ResizeObserver(draw).observe(canvas);
   else window.addEventListener('resize', draw);
   if (!AudioCtor) {
-    play.disabled = true; micButton.disabled = true;
+    play.disabled = createPlay.disabled = true; micButton.disabled = true;
     status.textContent = 'Audio is unavailable in this browser. You can still shape and save the model.';
+    createStatus.textContent = status.textContent;
   }
   sync();
 })();

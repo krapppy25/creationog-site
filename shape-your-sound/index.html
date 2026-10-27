@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="../assets/music-lab.css?v=20260930-law">
   <link rel="stylesheet" href="../assets/comedy.css?v=20261001b">
   <link rel="stylesheet" href="../assets/wave-mapping.css?v=20261022-brand1">
-  <link rel="stylesheet" href="../assets/shape-your-sound.css?v=20261027-1">
+  <link rel="stylesheet" href="../assets/shape-your-sound.css?v=20261027-2">
   <script src="../assets/voice-model.js?v=20261027-1" defer></script>
-  <script src="../assets/shape-your-sound.js?v=20261027-1" defer></script>
+  <script src="../assets/shape-your-sound.js?v=20261027-2" defer></script>
 </head>
 <body class="wave-page sound-page" id="top">
   <a class="wave-skip" href="#sound-hear">Skip to the sound experience</a>
@@ -47,6 +47,8 @@
       </section>
       <section id="sound-create" class="sound-create" aria-labelledby="sound-create-title">
         <div class="sound-section-title"><span class="sound-number" aria-hidden="true">03</span><div><h2 id="sound-create-title">Make it your own.</h2><p>Move the emphasis. Listen again. Follow what catches your ear.</p></div></div>
+        <div class="sound-create-play"><button type="button" id="sound-create-play" class="wave-listen" aria-describedby="sound-create-status">Listen to my sound · 9 seconds</button><button type="button" id="sound-create-stop" class="sound-secondary" aria-describedby="sound-create-status" disabled>Stop my sound</button></div>
+        <p id="sound-create-status" class="sound-model-note">Sound is off. Listen, then move either slider.</p>
         <div class="sound-sliders">
           <div><label for="sound-f1">Lower emphasis <output id="sound-f1-value" for="sound-f1">750 Hz</output></label><input id="sound-f1" type="range" min="250" max="900" step="10" value="750" aria-describedby="sound-emphasis-help"></div>
           <div><label for="sound-f2">Upper emphasis <output id="sound-f2-value" for="sound-f2">1200 Hz</output></label><input id="sound-f2" type="range" min="850" max="2800" step="10" value="1200" aria-describedby="sound-emphasis-help"></div>

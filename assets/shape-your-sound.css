@@ -36,6 +36,9 @@
 .sound-notice{font-weight:900;font-size:1.1rem;color:#08776d;margin:24px 0 6px}
 .sound-sliders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;background:#edf7f0;border:1px solid #c6ded4;border-radius:18px;padding:22px}
 .sound-sliders>div{min-width:0}
+.sound-create-play{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0 0}
+.sound-create-play .wave-listen{font-size:.9rem;padding:11px 20px}
+#sound-create-status{margin:13px 0 16px}
 .sound-recipe-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:22px}
 .sound-text-button{border:0;padding:10px;background:transparent;min-height:44px;color:var(--navy);font-size:.9rem;font-weight:900;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
 .sound-mic{border-top:1px solid var(--line);margin-top:30px;padding-top:2px}
